@@ -2,16 +2,33 @@
 *todo: import the new TicketList component to update syntax
 todo: 
 */
-
+import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import "./Tickets.css"
 
 export const TicketList = () => {
     const [tickets, setTickets] = useState([])
     const [filteredTickets, setFiltered] = useState([])
-
+    const [emergencyTickets, setEmergencyTickets] = useState(false)
+    const [incompleteTicketsOnly, updateIncompleteTickets] = useState(false)
+    const navigate = useNavigate()
+    //^ when importing useNavigate, make sure to set that fn() to a variable for access in the body
     const localHoneyUser = localStorage.getItem("honey_user")
     const honeyUserObject = JSON.parse(localHoneyUser)
+
+    
+    useEffect(
+        () => {
+            if (emergencyTickets) {
+                const filteredEmergencyTickets = tickets.filter(ticket => ticket.emergency === true)
+                setFiltered(filteredEmergencyTickets)
+            } else {
+                setFiltered(tickets)
+            }
+        }, 
+        [emergencyTickets]
+    )
+//^ note this code above toggles the state of the show emergency button in the return at the bottom
 
     useEffect(
         () => {
@@ -36,13 +53,41 @@ export const TicketList = () => {
             }
         }, [tickets]
     )
+    
+    useEffect(() => {
+      if (incompleteTicketsOnly) {
+        const incompleteTicketsArray = tickets.filter((ticket) => {
+          return (
+            ticket.userId === honeyUserObject.id && ticket.dateCompleted === ""
+          );
+        });
+        setFiltered(incompleteTicketsArray);
+      } else {
+        const myTickets = tickets.filter(ticket => ticket.userId === honeyUserObject.id)
+        setFiltered(myTickets)
+      }
+    }, [incompleteTicketsOnly]
+    );
+    //^ this useEffect() monitors teh state of incompleteTicketsonly
 
-    //^ problem was not with my ticketlist component, it was with the .map() on line 46. had to switch it to filteredTickets, not regular tickets
-    
-    
     return <>
     <h2>List of Tickets</h2>
+    {
+        honeyUserObject.staff
+        ? <>
+        <button onClick={ () => { setEmergencyTickets(true)} }> Show Only Emergency Tickets!</button> 
+        <button onClick={ () => { setEmergencyTickets(false)} }> Show All Tickets!</button> 
+        </>
+        : <>
+        <button onClick={ () => navigate("/ticket/create") }>Create Service Ticket</button>
+        <button onClick={ () => updateIncompleteTickets(true) }>Show Incomplete Service Tickets</button>
+        <button onClick={ () => updateIncompleteTickets(false) }>Show All Service Tickets</button>
+        </>
+    }
+
+    {/* //^the above is a "ternanry" statement. maybe review what that is. */}
     
+   
     <article className="tickets">
         {
             filteredTickets.map(
@@ -57,3 +102,4 @@ export const TicketList = () => {
     </article>
     </>
 }
+//^ book 7 ch 5: the problem was not with my ticketlist component, it was with the .map() in the return below had to switch it to filteredTickets, not regular tickets
