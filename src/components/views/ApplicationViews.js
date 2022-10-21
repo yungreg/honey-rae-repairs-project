@@ -1,27 +1,26 @@
 /*
 *todo: import the new ApplicationViews component to update syntax
-todo: uhhh
+todo: work wioth Steve's video to create two different application views. https://watch.screencastify.com/v/ILD2tDn8tRnepx75Q04o
+todo: create cxonditional to see if user is an employee or not
+^leave the unused imports.. helps me see what's changed from session to session. 
 */
 
 import { Outlet, Route, Routes } from "react-router-dom"
+import { TicketContainer } from "../tickets/TicketContainer"
 import { TicketForm } from "../tickets/TicketForm"
 import { TicketList } from "../tickets/TicketList"
+import { TicketSearch } from "../tickets/TicketSearch"
+import { CustomerViews } from "./CustomerViews"
+import { EmployeeViews } from "./EmployeeViews"
 
 export const ApplicationViews = () => {
-	return (
-        <Routes>
-            <Route path="/" element={
-                <>
-                    <h1>Honey Rae Repair Shop</h1>
-                    <div>Your one-stop-shop to get all your electronics fixed</div>
-                    <Outlet />
-                </>
-            }>
+	const localHoneyUser = localStorage.getItem("honey_user")
+    const honeyUserObject = JSON.parse(localHoneyUser)
 
-                <Route path="tickets" element={ <TicketList /> } />
-
-                <Route path="ticket/create" element={ <TicketForm /> } />
-            </Route>
-        </Routes>
-    )
+    if(honeyUserObject.staff){
+        return <EmployeeViews/>
+    } else {
+        return <CustomerViews/>
+    }
+    
 }
