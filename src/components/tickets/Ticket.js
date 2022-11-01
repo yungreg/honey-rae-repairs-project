@@ -27,7 +27,7 @@ const userEmployee = employees.find(employee => employee.userId === currentUser.
 
 //todo*: create the function for a button with conditions that only let employees view or use it
 //todo*: add onClick that will run closeTicket on click
-//todo: display the button
+//todo*: display the button
 const canCloseTicket = () => {
     if (userEmployee?.id === assignedEmployee?.id && ticketObject.dateCompleted === "") {
         return <button className="ticket_finish" 
@@ -36,6 +36,28 @@ const canCloseTicket = () => {
         return ""
     }
 }
+
+const deleteButton = () => {
+  if (!currentUser.staff) {
+    return (
+      <button
+        className="button_delete"
+        onClick={() => {
+          fetch(`http://localhost:8088/serviceTickets/${ticketObject.id}`, {
+            method: "DELETE",
+          }).then(() => {
+            getAllTickets();
+          });
+        }}
+      >
+        delete this one!
+      </button>
+    );
+  } else {
+    return "";
+  }
+};
+
 //todo: create a function that will actuall mark ther ticket closed when thhe finish ticket button is clicked
     const closeTicket = () => {
     const copy =  {
@@ -83,7 +105,7 @@ const buttonOrNoButton = () => {
     }
 }
 
-    return <section key={`ticket--${ticketObject.id}`} className="ticketObject">
+    return <section key={`ticket--${ticketObject.id}`} className="ticketObject_customer">
     <header>
         {
             currentUser.staff
@@ -103,6 +125,9 @@ const buttonOrNoButton = () => {
         }
         {
             canCloseTicket()
+        }
+        {
+            deleteButton()
         }
         </footer> 
 </section>

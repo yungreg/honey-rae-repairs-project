@@ -3,9 +3,23 @@
     flex-direction: column;
 }
 
-.ticketObject {
-    background-color: rgb(73, 163, 163);
+.ticketObject_customer {
+    background-color: rgb(39, 204, 97);
     border: 2px dotted rgb(0, 0, 0);
+    padding: 5px;
+    margin: 2px
+}
+
+.ticketObject_employee {
+    background-color: rgb(42, 41, 142);
+    border: 2px dotted rgb(240, 231, 231);
+    padding: 5px;
+    margin: 2px
+}
+.button_delete {
+    background-color: rgba(254, 42, 10, 0.552);
+    color: aliceblue;
+    border: 2px solid rgb(240, 231, 231);
     padding: 5px;
     margin: 2px
 }
