@@ -4,7 +4,7 @@ import "./Tickets.css"
 
 
 
-export const Ticket = ({ticketObject, isStaff, employees }) => {
+export const Ticket = ({ticketObject, currentUser, employees }) => {
 
     let assignedEmployee = null
 
@@ -15,7 +15,7 @@ if (ticketObject.employeeTickets.length > 0){
     return <section key={`ticket--${ticketObject.id}`} className="ticketObject">
     <header>
         {
-            isStaff 
+            currentUser 
             ? `Ticket ${ticketObject.id}`
             : <Link to={`/tickets/${ticketObject.id}/edit`}>Ticket {ticketObject.id}</Link>
         }
@@ -26,7 +26,24 @@ if (ticketObject.employeeTickets.length > 0){
         {
             ticketObject.employeeTickets.length
             ? `Currently being worked on by ${assignedEmployee !== null ? assignedEmployee.user.fullName :""}`
-            : <button>claim this one</button>
+            : <button 
+                onclick={()=>{
+                    fetch(`http://localhost:8088/employeeTickets`), {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            employeeId:0, 
+                            serviceTicketId:0
+                        })
+                    }
+                    .then(res => res.json())
+                    .then(()=>{
+                        <></>
+                    })
+                }}
+                >claim this ticket</button>
         }
         </footer> 
 </section>

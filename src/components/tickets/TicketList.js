@@ -108,7 +108,7 @@ export const TicketList = ({ searchTermsState }) => {
     <article className="tickets">
         {
             filteredTickets.map(
-                (ticket) => <Ticket isStaff={honeyUserObject.staff} ticketObject={ticket}
+                (ticket) => <Ticket currentUser={honeyUserObject} ticketObject={ticket}
                 employees={employees} />
             )
         }
