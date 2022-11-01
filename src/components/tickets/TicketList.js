@@ -41,14 +41,18 @@ export const TicketList = ({ searchTermsState }) => {
     )
 //^ note this code above toggles the state of the show emergency button in the return at the bottom
 
-    useEffect(
-        () => {
+const getAllTickets = () => {
             fetch(`http://localhost:8088/serviceTickets/?_embed=employeeTickets`)
             .then(response => response.json())
             .then((ticketArray) => {
                 setTickets(ticketArray)
             })
-            
+        }
+
+    useEffect(
+        () =>{  
+            getAllTickets()  
+               
             fetch(`http://localhost:8088/employees?_expand=user`)
             .then(response => response.json())
             .then((employeeArray) => {
@@ -108,7 +112,10 @@ export const TicketList = ({ searchTermsState }) => {
     <article className="tickets">
         {
             filteredTickets.map(
-                (ticket) => <Ticket currentUser={honeyUserObject} ticketObject={ticket}
+                (ticket) => <Ticket 
+                getAllTickets={getAllTickets}
+                currentUser={honeyUserObject} 
+                ticketObject={ticket}
                 employees={employees} />
             )
         }
