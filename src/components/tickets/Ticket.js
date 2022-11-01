@@ -1,7 +1,7 @@
 
 /*
 *todo: get throgh claimticket! you can do it! 
-todo: coem back to this video again: https://watch.screencastify.com/v/85s4TeoBoURaOdtsqmR4
+todo: coem back to this video about claiming tickets again to observe state : https://watch.screencastify.com/v/85s4TeoBoURaOdtsqmR4
 */
 
 
@@ -24,6 +24,32 @@ if (ticketObject.employeeTickets.length > 0){
 //found the employee profile object for the current USER
 const userEmployee = employees.find(employee => employee.userId === currentUser.id)
 
+// modify the button to only show it when an employee is logged in
+const buttonOrNoButton = () => {
+    if(currentUser.staff){
+        return <button 
+        onClick={()=>{
+            return fetch(`http://localhost:8088/employeeTickets`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    employeeId: userEmployee.id, 
+                    serviceTicketId: ticketObject.id
+                })
+            })
+            .then(res => res.json())
+            .then(()=>{
+                getAllTickets()
+            })
+        }}
+        >claim this ticket</button>
+    } else {
+        return ""
+    }
+}
+
     return <section key={`ticket--${ticketObject.id}`} className="ticketObject">
     <header>
         {
@@ -36,27 +62,11 @@ const userEmployee = employees.find(employee => employee.userId === currentUser.
     <section>{ticketObject.description}</section>
     <section>Emergency: {ticketObject.emergency ? "🧨" : "No"}</section> 
     <footer>
+        {/* steve's tip: avoid wiriting nested ternary statements. split them into components or functions instead. tip here: https://watch.screencastify.com/v/Noestc1pbJfib5usYjBF */}
         {
             ticketObject.employeeTickets.length
             ? `Currently being worked on by ${assignedEmployee !== null ? assignedEmployee?.user?.fullName :""}`
-            : <button 
-                onClick={()=>{
-                    return fetch(`http://localhost:8088/employeeTickets`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            employeeId: userEmployee.id, 
-                            serviceTicketId: ticketObject.id
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(()=>{
-                        getAllTickets()
-                    })
-                }}
-                >claim this ticket</button>
+            : buttonOrNoButton()
         }
         </footer> 
 </section>
