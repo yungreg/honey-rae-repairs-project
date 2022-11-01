@@ -5,29 +5,30 @@ todo: use teh query string parameter (finally)
 */
 
 import { useEffect, useState } from "react"
+import { Employee } from "./Employee"
+import "./Employees.css"
 
 export const EmployeeList = () => {
     const [employees, setEmployees] = useState([])
 //!note: don't forget the dependency array wehen setting up a useEffect to monitor State
     useEffect(
         () => {
-            return fetch(`http://localhost:8088/users?isStaff=true`)
+            fetch(`http://localhost:8088/users?isStaff=true`)
             .then(response => response.json())
             .then((employeeArray) =>{
                 setEmployees(employeeArray)
             })
-        }
+        }, []
     )
 
     return <article className="employees">
     {
-        employees.map(employee => { 
-            return <section className="employee" key={`employee--${employee.div}`}>
-                <div>Name: {employee.fullName}</div>
-                <div>Email: {employee.email}</div>
-            </section>
-            
-        })
+        employees.map(employee => <Employee 
+        key={`employee--${employee.id}`}
+        id={employee.id}
+        fullName={employee.fullName}
+        email={employee.email} /> 
+        )
     }
     </article>
 }

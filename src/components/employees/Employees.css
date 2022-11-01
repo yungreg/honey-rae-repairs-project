@@ -1,0 +1,26 @@
+.employees {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.employee {
+    background-color: rgb(92, 94, 75);
+    border-color: goldenrod;
+    color: blanchedalmond;
+    border: 3px dotted black;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.employee__header {
+    text-align: center;
+    color: orange;
+    font-size: large;
+}
+
+.employee__footer {
+    margin: 1rem;
+    color:orange
+}

@@ -1,0 +1,26 @@
+.customers {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.customer {
+    background-color: rgb(62, 26, 70);
+    border-color: goldenrod;
+    color: blanchedalmond;
+    border: 3px dotted black;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.customer__header {
+    text-align: center;
+    color: orange;
+    font-size: large;
+}
+
+.customer__footer {
+    margin: 1rem;
+    color:orange
+}

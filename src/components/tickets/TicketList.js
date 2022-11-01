@@ -2,6 +2,7 @@
 *todo: import the new TicketList component to update syntax
 todo: 
 */
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import "./Tickets.css"
@@ -101,7 +102,10 @@ export const TicketList = ({ searchTermsState }) => {
             filteredTickets.map(
                 (ticket) => {
                     return <section key={ticket.id} className="ticket">
-                        <header>{ticket.description}</header>
+                        <header>
+                            <Link to={`/tickets/${ticket.id}/edit`}>Ticket {ticket.id}</Link>
+                        </header>
+                        <section>{ticket.description}</section>
                         <footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer> 
                     </section>
                 }

@@ -7,7 +7,8 @@ export const TicketForm = () => {
     */
     const [ticket, updateState] = useState({
         description: '',
-        emergency: false
+        emergency: false,
+        userId: 0
     })
     /*
         TODO: Use the useNavigation() hook so you can redirect the user to the ticket list
@@ -20,7 +21,7 @@ export const TicketForm = () => {
 
     const handleSaveButtonClick = (event) => {
       event.preventDefault();
-      console.log("YOU DIED");
+    //   console.log("YOU DIED");
       const ticketToStoreInAPI = {
         userId: honeyUserObject.id,
         description: ticket.description,
@@ -75,7 +76,7 @@ export const TicketForm = () => {
                 <div className="form-group">
                     <label htmlFor="name">Emergency:</label>
                     <input type="checkbox"
-                        value={ticket.emergency}
+                        checked={ticket.emergency}
                         onChange={
                             (changeEvent) => {
                                 const copy = {...ticket}

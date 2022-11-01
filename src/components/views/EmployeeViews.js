@@ -6,9 +6,12 @@ todo: renmove TivketForm route, so that employees dont see that form
 */
 
 import { Outlet, Route, Routes } from "react-router-dom"
+import { CustomerDetails } from "../customers/CustomerDetails"
+import { CustomerList } from "../customers/CustomerList"
+import { EmployeeDetails } from "../employees/EmployeeDetails"
 import { EmployeeList } from "../employees/EmployeeList"
 import { TicketContainer } from "../tickets/TicketContainer"
-import { TicketForm } from "../tickets/TicketForm"
+import { Profile } from "../profile/Profile"
 
 
 export const EmployeeViews = () => {
@@ -27,6 +30,11 @@ export const EmployeeViews = () => {
                 <Route path="tickets" element={ <TicketContainer/> } />
                 
                 <Route path="employees" element={ <EmployeeList/> } />
+                <Route path="customers" element={ <CustomerList/> } />
+                <Route path="profile" element={ <><Profile /></> } />
+                <Route path="employees/:employeeId" element={ <><EmployeeDetails/></> } />
+                <Route path="customers/:customerId" element={ <><CustomerDetails/></> } />
+            
             </Route>
         </Routes>
     )
