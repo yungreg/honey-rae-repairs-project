@@ -5,10 +5,12 @@ todo:
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { Ticket } from "./Ticket"
 import "./Tickets.css"
 
 export const TicketList = ({ searchTermsState }) => {
     const [tickets, setTickets] = useState([])
+    const [employees, setEmployees] = useState([])
     const [filteredTickets, setFiltered] = useState([])
     const [emergencyTickets, setEmergencyTickets] = useState(false)
     const [incompleteTicketsOnly, updateIncompleteTickets] = useState(false)
@@ -41,10 +43,16 @@ export const TicketList = ({ searchTermsState }) => {
 
     useEffect(
         () => {
-            fetch(`http://localhost:8088/serviceTickets`)
+            fetch(`http://localhost:8088/serviceTickets/?_embed=employeeTickets`)
             .then(response => response.json())
             .then((ticketArray) => {
                 setTickets(ticketArray)
+            })
+            
+            fetch(`http://localhost:8088/employees?_expand=user`)
+            .then(response => response.json())
+            .then((employeeArray) => {
+                setEmployees(employeeArray)
             })
         },
         [] // When this array is empty, you are observing initial component state
@@ -100,15 +108,8 @@ export const TicketList = ({ searchTermsState }) => {
     <article className="tickets">
         {
             filteredTickets.map(
-                (ticket) => {
-                    return <section key={ticket.id} className="ticket">
-                        <header>
-                            <Link to={`/tickets/${ticket.id}/edit`}>Ticket {ticket.id}</Link>
-                        </header>
-                        <section>{ticket.description}</section>
-                        <footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer> 
-                    </section>
-                }
+                (ticket) => <Ticket isStaff={honeyUserObject.staff} ticketObject={ticket}
+                employees={employees} />
             )
         }
     </article>
